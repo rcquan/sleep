@@ -46,7 +46,7 @@ ggplot(bedtime, aes(Time, Count)) +
 
 ## frequency of sleep duration
 ggplot(df, aes(minutes)) + 
-    geom_histogram() +
+    geom_histogram(fill = "#1f77b4") +
     ylab("Count") +
     xlab("Duration of Sleep (minutes)") +
     ggtitle("Histogram of Sleep Duration") +
@@ -72,6 +72,22 @@ ggplot(df, aes(startTime, minutes)) +
                      labels = date_format("%b %Y")) +
     theme_bw()
 
+## sleep quality over time
+ggplot(df, aes(startTime, quality)) + 
+    ## geoms
+    geom_point(col = "#1f77b4",
+               alpha = 0.5, size = 3.5) + 
+    geom_smooth(method = "loess",
+                col = "black") +
+    ## titles
+    ylab("Sleep Quality (%)") +
+    xlab("Date") +
+    ggtitle("Sleep Quality over Time") +
+    ## scales
+    scale_x_datetime(breaks = "4 months", 
+                     labels = date_format("%b %Y")) +
+    theme_bw()
+
 ## relationship of sleep quality and duration
 ggplot(df, aes(minutes, quality)) +
     geom_point(col = "#1f77b4" ) +
@@ -80,3 +96,7 @@ ggplot(df, aes(minutes, quality)) +
     xlab("Sleep Quality (%)") +
     ylab("Sleep Duration (minutes)") +
     theme_bw()
+
+## linear model of sleep quality on sleep duration
+lmFit <- lm(quality ~ minutes, data = df)
+summary(lmFit)
